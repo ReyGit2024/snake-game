@@ -6,12 +6,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: NuGetToolInstaller@1
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: 'Snakes.sln'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: build
-    projects: 'Snakes.sln'
-    configuration: 'Release'
+ - task: NuGetToolInstaller@1
+ - task: NuGetCommand@2
+#  inputs:
+#    restoreSolution: 'Snakes.sln'
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: build
+#     projects: 'Snakes.sln'
+#    configuration: 'Release'
