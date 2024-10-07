@@ -1,23 +1,17 @@
+trigger:
+- main
+- develop
 
-name: Restore NuGet Packages
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
 pool:
   vmImage: 'ubuntu-latest'
+
 steps:
-- task: UseDotNet@2
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
   inputs:
-    packageType: 'sdk'
-    version: '6.x'
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-- script: dotnet restore Snakes.sln  # Usar el archivo .sln en la raíz
-  displayName: 'Restore dependencies'
-- script: dotnet build Snakes.sln --configuration Release  # Usar el archivo .sln en la raíz
-  displayName: 'Build the project'
-- script: dotnet test Snakes.sln --no-build --verbosity normal  # Usar el archivo .sln en la raíz
-  displayName: 'Run tests'
+    restoreSolution: 'Snakes.sln'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    projects: 'Snakes.sln'
+    configuration: 'Release'
