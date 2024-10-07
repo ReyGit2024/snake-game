@@ -1,14 +1,24 @@
 trigger:
-  - master
+- main
+- develop
+
 pool:
   vmImage: 'ubuntu-latest'
+
 steps:
-- task: UseDotNet@2
+- task: NuGetToolInstaller@1
+- task: NuGetCommand@2
   inputs:
-    packageType: 'sdk'
-    version: '6.x'
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-- script: dotnet build --configuration Release
-  displayName: 'Build solution'
-- script: dotnet test
-  displayName: 'Run unit tests'
+    restoreSolution: 'snakes.sln'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    projects: 'snakes.sln'
+    configuration: 'Release'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishProfile: '$(WebDeployPublishProfile)'
+    projects: 'snakes.csproj'
+    configuration: 'Release'
+    zipAfterPublish: true
